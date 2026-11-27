@@ -6,7 +6,8 @@
 // Les ressources VASL (raw.githubusercontent.com), PeerJS (unpkg) et les
 // bibliothèques de lecture des PDF de scénario (cdn.jsdelivr.net, versions
 // fixées) : gardées au fil des parties, pour rejouer hors ligne les boards
-// déjà vus. Les métadonnées XML et le buildFile changent avec VASL : réseau
+// déjà vus. Les métadonnées XML, le buildFile et les extensions (.vmdx,
+// js/extensions.js) changent avec VASL : réseau
 // d'abord ; les boards, overlays et images : cache d'abord.
 // ═══════════════════════════════════════════════════════════════
 // VERSION change à chaque publication : le cache de la version précédente
@@ -16,7 +17,7 @@
 // et de VASLweb.html, pour qu'une page neuve ne prenne jamais un script de
 // la version d'avant dans un cache HTTP.
 // APP : tout fichier de l'application.
-const VERSION = 'vasl-1.11';
+const VERSION = 'vasl-1.12';
 const CACHE_APP = 'vaslweb-app-' + VERSION;
 // Nom fixe ; « -v1 » garde le cache des boards des versions d'avant.
 const CACHE_VASL = 'vaslweb-vasl-v1';
@@ -31,44 +32,45 @@ const APP = [
   './icons/apple-touch-icon.png',
   './icons/favicon-32.png',
   './modeles/nouvelle-partie.vsav',
-  './pwa.js?v=vasl-1.11',
-  './css/vaslweb.css?v=vasl-1.11',
-  './js/outils.js?v=vasl-1.11',
-  './js/donnees/ssr.js?v=vasl-1.11',
-  './js/donnees/overlays-ext.js?v=vasl-1.11',
-  './js/donnees/mouvement.js?v=vasl-1.11',
-  './js/langue.js?v=vasl-1.11',
-  './js/noyau.js?v=vasl-1.11',
-  './js/fichiers.js?v=vasl-1.11',
-  './js/carte.js?v=vasl-1.11',
-  './js/hexagones.js?v=vasl-1.11',
-  './js/los-moteur.js?v=vasl-1.11',
-  './js/los-pions.js?v=vasl-1.11',
-  './js/los-fil.js?v=vasl-1.11',
-  './js/pieces.js?v=vasl-1.11',
-  './js/pions.js?v=vasl-1.11',
-  './js/boards.js?v=vasl-1.11',
-  './js/vlog.js?v=vasl-1.11',
-  './js/mf.js?v=vasl-1.11',
-  './js/commandes.js?v=vasl-1.11',
-  './js/chat-rapports.js?v=vasl-1.11',
-  './js/flare.js?v=vasl-1.11',
-  './js/cvp.js?v=vasl-1.11',
-  './js/dissimulation.js?v=vasl-1.11',
-  './js/tactile.js?v=vasl-1.11',
-  './js/bdd.js?v=vasl-1.11',
-  './js/qrdc.js?v=vasl-1.11',
-  './js/oba.js?v=vasl-1.11',
-  './js/des-utilisateurs.js?v=vasl-1.11',
-  './js/des-3d.js?v=vasl-1.11',
-  './js/ift.js?v=vasl-1.11',
-  './js/reseau.js?v=vasl-1.11',
-  './js/export.js?v=vasl-1.11',
-  './js/preferences.js?v=vasl-1.11',
-  './js/qc.js?v=vasl-1.11',
-  './js/interface.js?v=vasl-1.11',
-  './js/chat.js?v=vasl-1.11',
-  './js/menus.js?v=vasl-1.11'
+  './pwa.js?v=vasl-1.12',
+  './css/vaslweb.css?v=vasl-1.12',
+  './js/outils.js?v=vasl-1.12',
+  './js/donnees/ssr.js?v=vasl-1.12',
+  './js/donnees/overlays-ext.js?v=vasl-1.12',
+  './js/donnees/mouvement.js?v=vasl-1.12',
+  './js/langue.js?v=vasl-1.12',
+  './js/noyau.js?v=vasl-1.12',
+  './js/fichiers.js?v=vasl-1.12',
+  './js/carte.js?v=vasl-1.12',
+  './js/hexagones.js?v=vasl-1.12',
+  './js/los-moteur.js?v=vasl-1.12',
+  './js/los-pions.js?v=vasl-1.12',
+  './js/los-fil.js?v=vasl-1.12',
+  './js/pieces.js?v=vasl-1.12',
+  './js/pions.js?v=vasl-1.12',
+  './js/boards.js?v=vasl-1.12',
+  './js/vlog.js?v=vasl-1.12',
+  './js/mf.js?v=vasl-1.12',
+  './js/commandes.js?v=vasl-1.12',
+  './js/chat-rapports.js?v=vasl-1.12',
+  './js/flare.js?v=vasl-1.12',
+  './js/cvp.js?v=vasl-1.12',
+  './js/dissimulation.js?v=vasl-1.12',
+  './js/tactile.js?v=vasl-1.12',
+  './js/extensions.js?v=vasl-1.12',
+  './js/bdd.js?v=vasl-1.12',
+  './js/qrdc.js?v=vasl-1.12',
+  './js/oba.js?v=vasl-1.12',
+  './js/des-utilisateurs.js?v=vasl-1.12',
+  './js/des-3d.js?v=vasl-1.12',
+  './js/ift.js?v=vasl-1.12',
+  './js/reseau.js?v=vasl-1.12',
+  './js/export.js?v=vasl-1.12',
+  './js/preferences.js?v=vasl-1.12',
+  './js/qc.js?v=vasl-1.12',
+  './js/interface.js?v=vasl-1.12',
+  './js/chat.js?v=vasl-1.12',
+  './js/menus.js?v=vasl-1.12'
 ];
 const HOTES_VASL = ['raw.githubusercontent.com', 'unpkg.com', 'cdn.jsdelivr.net'];
 
@@ -149,7 +151,7 @@ self.addEventListener('fetch', e => {
     // avec cache: 'reload' ; il est pris au réseau et remplace celui du
     // cache. Pas de repli sur le cache : un échec doit se voir.
     if(req.cache === 'reload'){ e.respondWith(rafraichir(req, CACHE_VASL)); return; }
-    const variable = /\.xml$|\/buildFile$/i.test(url.pathname);
+    const variable = /\.xml$|\/buildFile$|\.vmdx$/i.test(url.pathname);
     e.respondWith(variable ? reseauDabord(req, CACHE_VASL) : cacheDabord(req, CACHE_VASL));
   }
 });
